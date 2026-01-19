@@ -1,6 +1,7 @@
 const sql = require("mssql");
 const config = require("../config/dbConfig");
 
+// 1. LẤY DANH SÁCH
 async function getAllCategories() {
   try {
     const pool = await sql.connect(config);
@@ -13,6 +14,21 @@ async function getAllCategories() {
   }
 }
 
+// 2. LẤY CHI TIẾT
+async function getCategoryById(id) {
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool
+      .request()
+      .input("CategoryID", sql.Int, id)
+      .query("SELECT * FROM Categories WHERE CategoryID = @CategoryID");
+    return result.recordset[0];
+  } catch (error) {
+    throw error;
+  }
+}
+
+// 3. TẠO MỚI
 async function createCategory(data) {
   try {
     const pool = await sql.connect(config);
@@ -36,6 +52,7 @@ async function createCategory(data) {
   }
 }
 
+// 4. CẬP NHẬT
 async function updateCategory(id, data) {
   try {
     const pool = await sql.connect(config);
@@ -65,11 +82,10 @@ async function updateCategory(id, data) {
   }
 }
 
-// XÓA
+// 5. XÓA
 async function deleteCategory(id) {
   try {
     const pool = await sql.connect(config);
-    // Kiểm tra xem có mục con không trước khi xóa
     const checkChild = await pool
       .request()
       .input("ID", sql.Int, id)
@@ -94,6 +110,7 @@ async function deleteCategory(id) {
 
 module.exports = {
   getAllCategories,
+  getCategoryById,
   createCategory,
   updateCategory,
   deleteCategory,

@@ -9,6 +9,17 @@ exports.getList = async (req, res) => {
   }
 };
 
+// MỚI: Lấy chi tiết 1 category
+exports.getDetail = async (req, res) => {
+  try {
+    const data = await categoryModel.getCategoryById(req.params.id);
+    if (!data) return res.status(404).json({ message: "Category not found" });
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 exports.create = async (req, res) => {
   try {
     await categoryModel.createCategory(req.body);
