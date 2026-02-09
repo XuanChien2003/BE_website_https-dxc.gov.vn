@@ -24,7 +24,7 @@ async function getUserById(id) {
       .request()
       .input("UserID", sql.Int, id)
       .query(
-        "SELECT UserID, Username, FullName, Role, Avatar FROM Users WHERE UserID = @UserID"
+        "SELECT UserID, Username, FullName, Role, Avatar FROM Users WHERE UserID = @UserID",
       );
 
     return result.recordset[0];
@@ -120,6 +120,21 @@ async function deleteUser(id) {
   }
 }
 
+// 7. Lấy danh sách toàn bộ người dùng (Dành cho trang quản trị)
+async function getAllUsers() {
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool
+      .request()
+      .query(
+        "SELECT UserID, Username, FullName, Role, Avatar FROM Users ORDER BY UserID DESC",
+      );
+    return result.recordset;
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   getUserByUsername,
   getUserById,
@@ -127,4 +142,5 @@ module.exports = {
   updateUser,
   changePassword,
   deleteUser,
+  getAllUsers,
 };

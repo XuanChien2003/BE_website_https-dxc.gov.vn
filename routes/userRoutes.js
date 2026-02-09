@@ -17,4 +17,5 @@ router.put("/:id/password", userController.changePassword);
 // Xóa user
 router.delete("/:id", userController.delete);
 
+router.get("/", userController.getAll);
 module.exports = router;

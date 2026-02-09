@@ -27,9 +27,6 @@ const webLinkRoutes = require("./routes/webLinkRoutes");
 const userRoutes = require("./routes/userRoutes");
 const aiRoutes = require("./routes/aiRoutes");
 
-// Use Routes
-// Thêm tiền tố /api để dễ quản lý routes (Optional, nhưng khuyên dùng)
-// Nếu dùng như code cũ thì giữ nguyên, nhưng nhớ check kỹ đường dẫn gọi từ FE
 app.use("/documents", documentRoutes);
 app.use("/news", newsRoutes);
 app.use("/categories", categoryRoutes);
@@ -45,11 +42,14 @@ app.get("/", (req, res) => {
   res.send("API Portal is running on Vercel...");
 });
 
-// Xử lý lỗi
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something broke!");
 });
 
-// Quan trọng: Export app thay vì listen
+const PORT = process.env.PORT || 9999;
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server đang chạy tại: http://localhost:${PORT}`);
+});
 module.exports = app;
