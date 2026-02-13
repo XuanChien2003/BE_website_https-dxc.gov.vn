@@ -95,3 +95,12 @@ exports.delete = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.getAll = async (req, res) => {
+  try {
+    const users = await userModel.getAllUsers();
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
