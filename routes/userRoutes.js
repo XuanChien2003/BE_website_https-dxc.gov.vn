@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
+const {authorize} = require("../middleware/authorize");
 
 // Lấy chi tiết user
 router.get("/:id", userController.getDetail);

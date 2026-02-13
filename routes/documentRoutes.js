@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const documentController = require("../controllers/documentController");
+const {authorize} = require("../middleware/authorize");
 
 //Lấy danh sách
 router.get("/", documentController.getList);
@@ -9,11 +10,11 @@ router.get("/", documentController.getList);
 router.get("/:id", documentController.getDetail);
 
 //Sửa văn bản
-router.put("/:id", documentController.update);
+router.put("/:id", authorize(['admin']), documentController.update);
 
 //Xóa văn bản
-router.delete("/:id", documentController.delete);
+router.delete("/:id", authorize(['admin']), documentController.delete);
 //Tạo mới văn bản
-router.post("/", documentController.create);
+router.post("/", authorize(['admin']), documentController.create);
 
 module.exports = router;
