@@ -23,7 +23,8 @@
     "jsonwebtoken": "^9.0.3",
     "msnodesqlv8": "^5.1.4",
     "mssql": "^12.2.0",
-    "node-cache": "^5.1.2"
+    "node-cache": "^5.1.2",
+    "openai": "^6.32.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"

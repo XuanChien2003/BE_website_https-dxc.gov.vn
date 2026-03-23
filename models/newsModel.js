@@ -116,10 +116,25 @@ async function deleteNews(id) {
   }
 }
 
+// 6. LẤY DANH SÁCH TIN GẦN ĐÂY DÀNH CHO CONTEXT CỦA AI
+async function getRecentNewsContext() {
+  try {
+    const pool = await sql.connect(config);
+    // Lấy 10 bài viết mới nhất có tiêu đề và tóm tắt
+    const result = await pool
+      .request()
+      .query("SELECT TOP 10 Title, Summary FROM News ORDER BY PublishedDate DESC");
+    return result.recordset;
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   getAllNews,
   getNewsById,
   createNews,
   updateNews,
   deleteNews,
+  getRecentNewsContext,
 };

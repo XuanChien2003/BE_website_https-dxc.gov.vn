@@ -1,17 +1,15 @@
-const jwt = require ("jsonwebtoken")
+const jwt = require("jsonwebtoken")
 function checkAuthenticate(req, res, next) {
-    try{
-        const publicRoutes = ['/register','/login','/auth/refresh']
+    try {
+        const publicRoutes = ['/register', '/login', '/auth/refresh', '/ai/chat']
         const isPublic = publicRoutes.some(route => req.path.includes(route));
-        if(isPublic || req.method === 'GET') {
-            console.log(isPublic)
+        if (isPublic || req.method === 'GET') {
             return next();
         }
 
-        const token = req.header('Authorization')?.replace('Bearer ', '')|| req.cookies?.accessToken;;
+        const token = req.header('Authorization')?.replace('Bearer ', '') || req.cookies?.accessToken;;
 
-        if(!token) {
-            console.log('token')
+        if (!token) {
             return res.status(401).json({
                 status: false,
                 message: 'Đăng nhập lại'
@@ -23,7 +21,7 @@ function checkAuthenticate(req, res, next) {
         return next();
 
 
-    }catch (err) {
+    } catch (err) {
         return res.status(401).json({
             status: false,
             message: 'Đăng nhập lại'
