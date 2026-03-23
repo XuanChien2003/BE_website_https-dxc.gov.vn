@@ -44,7 +44,22 @@ exports.login = async (req, res) => {
     }
 
     // 2. So sánh mật khẩu nhập vào với mật khẩu đã mã hóa trong DB
-    const isMatch = await bcrypt.compare(password, user.Password);
+    let isMatch = false;
+    const dbPass = user.Password ? user.Password.trim() : "";
+    const inputPass = password ? password.trim() : "";
+
+    if (dbPass.startsWith("$2a$") || dbPass.startsWith("$2b$") || dbPass.startsWith("$2y$")) {
+      try {
+        isMatch = await bcrypt.compare(inputPass, dbPass);
+      } catch (err) {
+        isMatch = false; // Bỏ qua lỗi 500 nếu inputPass không hợp lệ
+      }
+    } else {
+      // Fallback: Nếu password trong DB là chữ thường, vd '123456'
+      // dùng .trim() vì SQL Server đôi khi thêm khoảng trắng vào chuỗi (CHAR)
+      isMatch = (inputPass === dbPass);
+    }
+
     if (!isMatch) {
       return res.status(400).json({ message: "Sai tài khoản hoặc mật khẩu" });
     }
